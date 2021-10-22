@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/menu_button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/background.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/game_over.gd" type="Script" id=3]
+[ext_resource path="res://fonts/pixeled_32.tres" type="DynamicFont" id=4]
+[ext_resource path="res://scenes/exit_button.tscn" type="PackedScene" id=6]
+
+[node name="GameOver" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Background" parent="." instance=ExtResource( 2 )]
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+margin_right = 640.0
+margin_bottom = 360.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_left = 147.0
+margin_top = 66.0
+margin_right = 492.0
+margin_bottom = 293.0
+
+[node name="Winner" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_right = 345.0
+margin_bottom = 91.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "Winning Text"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 95.0
+margin_right = 345.0
+margin_bottom = 159.0
+
+[node name="Menu" parent="CenterContainer/VBoxContainer/MenuContainer" instance=ExtResource( 1 )]
+margin_left = 108.0
+margin_right = 236.0
+margin_bottom = 64.0
+
+[node name="ExitContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 163.0
+margin_right = 345.0
+margin_bottom = 227.0
+
+[node name="Exit" parent="CenterContainer/VBoxContainer/ExitContainer" instance=ExtResource( 6 )]
+margin_left = 108.0
+margin_right = 236.0
+margin_bottom = 64.0
+[connection signal="pressed" from="CenterContainer/VBoxContainer/MenuContainer/Menu" to="." method="on_menu_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ExitContainer/Exit" to="." method="on_exit_pressed"]

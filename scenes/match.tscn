@@ -1,0 +1,117 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://scenes/hud_powerup.tscn" type="PackedScene" id=1]
+[ext_resource path="res://default_env.tres" type="Environment" id=2]
+[ext_resource path="res://scenes/hud_scoreboard.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/goal.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/ball.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/player.tscn" type="PackedScene" id=6]
+[ext_resource path="res://src/match.gd" type="Script" id=7]
+[ext_resource path="res://src/hud.gd" type="Script" id=8]
+[ext_resource path="res://tilesets/match.tres" type="TileSet" id=9]
+[ext_resource path="res://scenes/powerup_spawner.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/background.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/hud_boost.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/pause_menu.tscn" type="PackedScene" id=13]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32, 192 )
+
+[node name="Match" type="Node2D"]
+script = ExtResource( 7 )
+
+[node name="Map" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Background" parent="Map" instance=ExtResource( 11 )]
+
+[node name="TileMap" type="TileMap" parent="Map"]
+tile_set = ExtResource( 9 )
+cell_size = Vector2( 16, 16 )
+cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
+format = 1
+tile_data = PoolIntArray( 0, 0, 0, 39, 0, 0, 65536, 1, 0, 65575, 1, 0, 131072, 1, 0, 131111, 1, 0, 196608, 1, 0, 196647, 1, 0, 262144, 1, 0, 262183, 1, 0, 327680, 1, 0, 327719, 1, 0, 393216, 1, 0, 393255, 1, 0, 458752, 1, 0, 458791, 1, 0, 524288, 3, 0, 524327, 5, 0, 917504, 4, 0, 917543, 6, 0, 983040, 1, 0, 983079, 1, 0, 1048576, 1, 0, 1048615, 1, 0, 1114112, 1, 0, 1114151, 1, 0, 1179648, 1, 0, 1179687, 1, 0, 1245184, 1, 0, 1245223, 1, 0, 1310720, 1, 0, 1310759, 1, 0, 1376256, 1, 0, 1376295, 1, 0, 1441792, 2, 0, 1441831, 2, 0 )
+
+[node name="Goal_p1" parent="Map" instance=ExtResource( 4 )]
+position = Vector2( -8, 184 )
+index = 1
+
+[node name="Goal_p2" parent="Map" instance=ExtResource( 4 )]
+position = Vector2( 648, 184 )
+
+[node name="PowerupSpawner" parent="Map" instance=ExtResource( 10 )]
+position = Vector2( 320, 180 )
+
+[node name="Barrier_left" type="RigidBody2D" parent="Map"]
+position = Vector2( -32, 184 )
+mode = 1
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Barrier_left"]
+shape = SubResource( 1 )
+
+[node name="Barrier_right" type="RigidBody2D" parent="Map"]
+position = Vector2( 672, 184 )
+mode = 1
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Barrier_right"]
+shape = SubResource( 1 )
+
+[node name="Bodies" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="Player_1" parent="Bodies" instance=ExtResource( 6 )]
+position = Vector2( 200, 184 )
+rotation = 1.5708
+
+[node name="Player_2" parent="Bodies" instance=ExtResource( 6 )]
+position = Vector2( 440, 184 )
+rotation = -1.5708
+index = 1
+
+[node name="Ball" parent="Bodies" instance=ExtResource( 5 )]
+position = Vector2( 320, 184 )
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource( 8 )
+
+[node name="Scoreboard" parent="HUD" instance=ExtResource( 3 )]
+
+[node name="Powerup_p1" parent="HUD" instance=ExtResource( 1 )]
+position = Vector2( 56, 40 )
+
+[node name="Powerup_p2" parent="HUD" instance=ExtResource( 1 )]
+position = Vector2( 584, 40 )
+index = 1
+
+[node name="Boost_p1" parent="HUD" instance=ExtResource( 12 )]
+margin_left = 88.0
+margin_top = 32.0
+margin_right = -488.0
+margin_bottom = -312.0
+
+[node name="Boost_p2" parent="HUD" instance=ExtResource( 12 )]
+margin_left = 488.0
+margin_top = 32.0
+margin_right = -88.0
+margin_bottom = -312.0
+index = 1
+
+[node name="PauseMenu" parent="HUD" instance=ExtResource( 13 )]
+visible = false
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 2 )
+[connection signal="goal_scored" from="Map/Goal_p1" to="HUD/Scoreboard" method="on_goal_scored"]
+[connection signal="goal_scored" from="Map/Goal_p1" to="." method="on_goal_scored"]
+[connection signal="goal_scored" from="Map/Goal_p2" to="HUD/Scoreboard" method="on_goal_scored"]
+[connection signal="goal_scored" from="Map/Goal_p2" to="." method="on_goal_scored"]
+[connection signal="powerup_gained" from="Bodies/Player_1" to="HUD/Powerup_p1" method="on_powerup_gained"]
+[connection signal="powerup_used" from="Bodies/Player_1" to="HUD/Powerup_p1" method="on_powerup_used"]
+[connection signal="powerup_gained" from="Bodies/Player_2" to="HUD/Powerup_p2" method="on_powerup_gained"]
+[connection signal="powerup_used" from="Bodies/Player_2" to="HUD/Powerup_p2" method="on_powerup_used"]

@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://fonts/pixeled_16.tres" type="DynamicFont" id=1]
+[ext_resource path="res://src/hud_scoreboard.gd" type="Script" id=2]
+
+[node name="Scoreboard" type="HBoxContainer"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -28.5
+margin_top = 12.0
+margin_right = 28.5
+margin_bottom = 46.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="P1" type="Label" parent="."]
+margin_right = 32.0
+margin_bottom = 91.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Divider" type="Label" parent="."]
+margin_left = 36.0
+margin_right = 62.0
+margin_bottom = 91.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "/"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="P2" type="Label" parent="."]
+margin_left = 66.0
+margin_right = 98.0
+margin_bottom = 91.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "0"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

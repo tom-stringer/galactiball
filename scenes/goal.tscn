@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/explosion.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/goal.gd" type="Script" id=2]
+[ext_resource path="res://particles/goal_explosion_right.tres" type="Material" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 40 )
+
+[node name="Goal" type="Area2D" groups=[
+"goal",
+]]
+script = ExtResource( 2 )
+
+[node name="Area" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Explosion" parent="." instance=ExtResource( 1 )]
+position = Vector2( 8, 0 )
+visibility_rect = Rect2( -95.779, -85.7604, 103.091, 164.912 )
+process_material = ExtResource( 3 )

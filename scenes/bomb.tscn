@@ -1,0 +1,60 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://src/bomb.gd" type="Script" id=2]
+[ext_resource path="res://scenes/explosion.tscn" type="PackedScene" id=3]
+[ext_resource path="res://textures/bomb.png" type="Texture" id=4]
+[ext_resource path="res://textures/bomb_zone.png" type="Texture" id=5]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 64.0
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 6.0
+
+[sub_resource type="Animation" id=3]
+resource_name = "flash"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Zone:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[node name="Bomb" type="RigidBody2D" groups=[
+"wrap",
+]]
+script = ExtResource( 2 )
+
+[node name="BlastRadius" type="Area2D" parent="."]
+
+[node name="Area" type="CollisionShape2D" parent="BlastRadius"]
+shape = SubResource( 1 )
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="Fuse" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[node name="Explosion" parent="." instance=ExtResource( 3 )]
+
+[node name="Zone" type="Sprite" parent="."]
+scale = Vector2( 1.33333, 1.33333 )
+z_index = -1
+texture = ExtResource( 5 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/flash = SubResource( 3 )
+[connection signal="timeout" from="Fuse" to="." method="explode"]
